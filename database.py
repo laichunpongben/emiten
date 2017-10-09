@@ -30,6 +30,8 @@ def drop():
     conn.close()
 
 def save(**kwargs):
+    # TODO: set isolation_level = None, manual begin and commit
+    
     title = kwargs.get('title', '')
     description = kwargs.get('description', '')
     company = kwargs.get('company', '')

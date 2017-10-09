@@ -8,18 +8,25 @@ DB_NAME = 'emiten.db'
 def create():
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-    c.execute('''CREATE TABLE opportunities (datetime text, title text, description text, company text, url text, keyword text)''')
+    sqls = [
+        '''CREATE TABLE IF NOT EXISTS opportunities (datetime text, title text, description text, company text, url text, keyword text)''',
+        '''CREATE TABLE IF NOT EXISTS companies (company text, location text)'''
+    ]
+    for sql in sqls:
+        c.execute(sql)
     conn.commit()
     conn.close()
 
 def drop():
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-    try:
-        c.execute('''DROP TABLE opportunities''')
-        conn.commit()
-    except sqlite3.OperationalError as e:
-        print(e)
+    sqls = [
+        '''DROP TABLE IF EXISTS opportunities''',
+        '''DROP TABLE IF EXISTS companies'''
+    ]
+    for sql in sqls:
+        c.execute(sql)
+    conn.commit()
     conn.close()
 
 def save(**kwargs):
